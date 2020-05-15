@@ -7,7 +7,7 @@ function App() {
   return (
     <div>
       <Layout>
-        <MalaBuilder/>
+        <MalaBuilder/> {/* Comment */}
       </Layout>
     </div>
   );
