@@ -1,0 +1,27 @@
+.Button {
+    /* display: flex; */
+    text-align: center;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: white;
+    cursor: pointer;
+    outline: none;
+    border: 1px solid black;
+    margin: 10px;
+}
+
+.Button:disabled {
+    background-color: grey;
+    color: lightgray;
+    cursor: not-allowed;
+    
+}
+
+.Positive {
+    background-color: green;
+}
+
+.Negative {
+    background-color: rgb(212, 48, 48);
+}

@@ -1,0 +1,33 @@
+.Mala {
+    width: 100%;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+}
+
+.Button {
+    display: flex;
+    text-align: center;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: lightgreen;
+    cursor: pointer;
+    outline: none;
+    border: 1px solid black;
+}
+
+.Button:disabled {
+    background-color: grey;
+    color: lightgray;
+    cursor: not-allowed;
+    
+}
+
+/* @media (min-width: 500px) {
+    .Mala {
+        max-width: 500px;
+        justify-content: space-between;
+        align-items: center;
+    }
+} */

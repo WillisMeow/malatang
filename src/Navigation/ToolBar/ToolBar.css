@@ -1,0 +1,13 @@
+.ToolBar {
+    display: flex;
+    position: fixed;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: salmon;
+    align-items: center;
+    height: 56px;
+    width: 100%;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
+}
