@@ -5,7 +5,7 @@ import SideDrawer from '../UI/SideDrawer/SideDrawer';
 
 class layout extends Component {
     state = {
-        showSideDrawer: true
+        showSideDrawer: false
     }
 
     closeSideDrawerHandler = () => {

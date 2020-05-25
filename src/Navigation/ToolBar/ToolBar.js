@@ -2,22 +2,23 @@ import React from 'react';
 import classes from './ToolBar.css'
 import Logo from '../../UI/Logo/Logo';
 import DrawerToggle from '../../UI/SideDrawer/DrawerToggle/DrawerToggle';
+import NavigationItems from '../NavigationItems/NavigationItems';
 
 const toolBar = (props) => {
     return (
         <header className={classes.ToolBar}>
         <DrawerToggle clicked={props.toggleClicked} />
-            <div onclick={props.menuClicked}>
+        <NavigationItems />
+            {/* <div onclick={props.menuClicked}>
             MENU
-                {/* <button onClick={props.clickedMenu}>MENU</button> */}
-            </div>
+            </div> */}
             <Logo height='150%' />
-            <div>
+            {/* <div>
                 MalaTang Builder
             </div>
             <div>
                 Checkout
-            </div>
+            </div> */}
         </header>
     )
 }
