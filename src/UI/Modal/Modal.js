@@ -7,7 +7,7 @@ class modal extends Component {
     render () {
         return (
             <>
-            <Backdrop show={this.props.show} cClicked={this.props.cancelClicked}/>
+            <Backdrop show={this.props.show} Clicked={this.props.cancelClicked}/>
             <div className={classes.Modal} 
                 style={{transform: this.props.show ? 'translate(0)' : 'translateY(-100vh)',
                 opacity: this.props.show ? '1' : '0'}}>
