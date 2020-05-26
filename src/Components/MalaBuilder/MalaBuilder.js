@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import Mala from '../Mala/Mala';
 import Modal from '../../UI/Modal/Modal';
-// import Button from '../../UI/Button/Button';
 import OrderSummary from '../OrderSummary/OrderSummary';
-import axios from 'axios';
 import Spinner from '../../UI/Spinner/Spinner';
 
 class MalaBuilder extends Component {
@@ -49,19 +47,6 @@ class MalaBuilder extends Component {
         }
     }
 
-    /* purchasableHandler = (ingredients) => {
-        const sum = Object.keys(ingredients)
-        .map(igKey => {
-            // console.log(ingredients[igKey])
-            return ingredients[igKey] 
-        })
-        .reduce((sum,el) => {
-            return sum + el
-        })
-        // console.log(sum)
-    } */
-
-
     // Adding ingredients in State
     ingredientAddedHandler = (type) => {
         let oldIngredient = this.state.ingredients[type]
@@ -104,30 +89,18 @@ class MalaBuilder extends Component {
         this.setState({purchasing : false})
     }
 
-    processOrderHandler = () => { // On click, ingredients state gets reset to 0
-        //alert("Processing")
-        this.setState({sendingData : true})
-        const order = {
-            price: this.state.totalPrice,
-            ingredients: this.state.ingredients,
-            customer: {
-                name: "Willis Park",
-                address: {
-                    street: "101 Test Street",
-                    zipcode: "42001",
-                    country: "New Zealand"
-                },
-                email: "test@gmail.com"
-            },
-            deliveryMethod: 'Next Day'
+    processOrderHandler = () => {
+        const queryParams = []; // Creating the Query params, to enable data to be passed to ContactDetails page
+        for (let i in this.state.ingredients) {
+            queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]));
         }
-        axios.post('https://react-malatang.firebaseio.com/orders.json', order)
-        .then(response => {
-            let oldState = {...this.state.ingredients}
-            for(const igKey in oldState) {
-            oldState[igKey] = 0
-            }
-        this.setState({sendingData : false, purchasing : false, ingredients : oldState, totalPrice : 10})
+        console.log(queryParams)
+        queryParams.push('price=' + this.state.totalPrice)
+        const queryString = queryParams.join('&');
+        console.log(queryString)
+        this.props.history.push({
+            pathname: '/contactDetails',
+            search: '?' + queryString
         })
     }
 

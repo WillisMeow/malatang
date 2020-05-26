@@ -3,6 +3,8 @@ import './App.css';
 import Layout from './Layout/Layout';
 import MalaBuilder from './Components/MalaBuilder/MalaBuilder';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import ContactDetails from './Components/ContactDetails/ContactDetails';
+import Orders from './Components/Orders/Orders';
 
 function App() {
   return (
@@ -10,7 +12,8 @@ function App() {
     <BrowserRouter>
       <Layout>
         <Switch>
-          <Route path='/orders' render={()=> <h1>Orders Page</h1>} />
+          <Route path='/contactDetails' component={ContactDetails} />
+          <Route path='/orders' component={Orders} />
           <Route path='/' exact component={MalaBuilder} />
         </Switch>
           
