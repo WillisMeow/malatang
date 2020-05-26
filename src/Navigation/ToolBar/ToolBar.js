@@ -7,18 +7,12 @@ import NavigationItems from '../NavigationItems/NavigationItems';
 const toolBar = (props) => {
     return (
         <header className={classes.ToolBar}>
-        <DrawerToggle clicked={props.toggleClicked} />
-        <NavigationItems />
-            {/* <div onclick={props.menuClicked}>
-            MENU
-            </div> */}
+            <DrawerToggle clicked={props.toggleClicked} />
             <Logo height='150%' />
-            {/* <div>
-                MalaTang Builder
-            </div>
-            <div>
-                Checkout
-            </div> */}
+            <nav className={classes.DesktopOnly}>
+                <NavigationItems />
+            </nav>
+            
         </header>
     )
 }
