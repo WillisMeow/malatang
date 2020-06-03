@@ -1,21 +1,8 @@
 .ContactDetails {
-    display: block;
+    margin: 15px auto;
     width: 80%;
-    padding: 20px;
-    margin: 15px auto;
+    padding: 10px;
     box-sizing: border-box;
-    align-items: center;
-    text-align: center;
-}
-
-.Input {
-    box-sizing: border-box;
-    display: block;
-    width: 100%;
-    margin: 15px auto;
-    padding: 8px;
-    border: 1px solid grey;
-    border-radius: 5px;
     text-align: center;
 }
 
