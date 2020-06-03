@@ -128,7 +128,7 @@ class contactDetails extends Component {
         .then(response => {
             this.setState({ loading : false })
             this.props.history.replace('/')
-        )
+        })
     }
 
     checkValidity(value, rules) {
@@ -199,6 +199,7 @@ class contactDetails extends Component {
             }
         return (
             <div className={classes.ContactDetails}>
+            <h3>Enter your Contact Details</h3>
                 {form}
             </div>
 
