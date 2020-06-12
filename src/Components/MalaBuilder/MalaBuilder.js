@@ -73,7 +73,7 @@ class MalaBuilder extends Component {
     }
 
     processOrderHandler = () => {
-        this.props.onInitPurchase()
+        this.props.onInitPurchase() // used to reset purchased state (global redux within orders.js) to false
         const queryParams = []; // Creating the Query params, to enable data to be passed to ContactDetails page
         for (let i in this.state.ingredients) {
             queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]));
