@@ -3,11 +3,20 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import malaBuilderReducer from './store/reducers/malaBuilder';
+import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
+import { Provider } from 'react-redux';
+import thunk from 'redux-thunk'; // to allow middleware
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const store = createStore(malaBuilderReducer, composeEnhancers(applyMiddleware(thunk)))
 
 ReactDOM.render(
+  <Provider store={store}>
   <React.StrictMode>
     <App />
-  </React.StrictMode>,
+  </React.StrictMode>
+  </Provider>,
   document.getElementById('root')
 );
 

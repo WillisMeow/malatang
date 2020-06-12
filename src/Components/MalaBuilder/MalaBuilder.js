@@ -3,10 +3,12 @@ import Mala from '../Mala/Mala';
 import Modal from '../../UI/Modal/Modal';
 import OrderSummary from '../OrderSummary/OrderSummary';
 import Spinner from '../../UI/Spinner/Spinner';
+import { connect } from 'react-redux';
+import * as actionCreators from '../../store/actions/index';
 
 class MalaBuilder extends Component {
     state = {
-        ingredients: {
+        /* ingredients: {
             beef: 0,
             pork: 0,
             lamb: 0,
@@ -14,7 +16,7 @@ class MalaBuilder extends Component {
             salad: 0,
             noodle: 0,
             tofu: 0,
-        },
+        }, */
         totalPrice: 10,
         price: {
             beef: 2,
@@ -32,6 +34,10 @@ class MalaBuilder extends Component {
     }
 
     // Use this handler to update the state, and in the Component Atrributes, pass through the state, not this method
+    componentDidMount () {
+        this.props.onInitIngredients()
+    }
+
     purchasableHandler = (ingredients) => {
         let sum = Object.keys(ingredients)
         .map(igKey => {
@@ -39,12 +45,8 @@ class MalaBuilder extends Component {
         })
         .reduce((sum, el) => {
             return sum + el
-        })
-        if (sum > 0) {
-            this.setState({ purchasable : true })
-        } else {
-            this.setState({ purchasable : false })
-        }
+        }, 0)
+        return sum > 0;
     }
 
     // Adding ingredients in State
@@ -59,7 +61,7 @@ class MalaBuilder extends Component {
         let newTotal = this.state.totalPrice + ingredientPrice
         this.setState({totalPrice : newTotal})
 
-        this.purchasableHandler(ingredientState) // Pasing through inredientState to ensure working with most up to date state
+        this.purchasableHandler(this.props.ingredients) // Passing through ingredientState to ensure working with most up to date state
     };
     // Removing ingredients in State
     ingredientRemovedHandler = (type) => {
@@ -105,9 +107,8 @@ class MalaBuilder extends Component {
     }
 
     render () {
-        // To create an array with information as to whether the remove button should be disabled for each ingredient
-        const disabledInfo = {
-            ...this.state.ingredients
+        const disabledInfo = { // To create an array with information as to whether the remove button should be disabled for each ingredient
+            ...this.props.ingredients
         };
         for (let key in disabledInfo) {
             disabledInfo[key] = disabledInfo[key] <= 0 // Returns {beef: true, lamb: false...}
@@ -120,24 +121,47 @@ class MalaBuilder extends Component {
         if (this.state.sendingData) {
             summary = <Spinner />
         }
+
+        let mala = (this.props.error ? <p>Ingredients can't be loaded!</p> : <Spinner />)
+        if (this.props.ingredients) { // making sure the <Mala> componenet is not loaded before the ingredients global redux state is set.
+            mala = (
+                <Mala 
+                    addClicker={this.props.onAddIngredient} 
+                    removeClicker={this.props.onRemoveIngredient} 
+                    ingredients={this.props.ingredients}
+                    totalPrice={this.props.totalPrice}
+                    disabled={disabledInfo}
+                    purchasable={this.purchasableHandler(this.props.ingredients)}
+                    clicked={this.purchasingStateHandler}
+                />
+                    )
+        }
         return (
             <>
             <Modal cancelClicked={this.cancelOrderHandler} show={this.state.purchasing}>
                 {/* <Button text={'Hello'} clicked={this.cancelOrderHandler}/> */} {/* TODO: Create a orderProcessHandler that resets ingredient states to 0 and sends http request, sending data to firebase */}
                 {summary}
             </Modal>
-            <Mala 
-                addClicker={this.ingredientAddedHandler} 
-                removeClicker={this.ingredientRemovedHandler} 
-                ingredients={this.state.ingredients}
-                totalPrice={this.state.totalPrice}
-                disabled={disabledInfo}
-                purchasable={this.state.purchasable}
-                clicked={this.purchasingStateHandler}
-                />
+            {mala}
             </>
         )
     }
 };
 
-export default MalaBuilder
+const mapStateToProps = state => {
+    return {
+        ingredients: state.ingredients,
+        error: state.error,
+        totalPrice: state.totalPrice,
+    };
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onInitIngredients: () => dispatch(actionCreators.initIngredients()),
+        onAddIngredient: (type) => dispatch(actionCreators.addIngredient(type)),
+        onRemoveIngredient: (type) => dispatch(actionCreators.removeIngredient(type))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MalaBuilder);

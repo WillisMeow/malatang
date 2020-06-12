@@ -45,4 +45,5 @@ const mala = (props) => {
     )
 };
 
+
 export default mala;
