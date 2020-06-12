@@ -174,6 +174,7 @@ class contactDetails extends Component {
 
         let form = (
             <form onSubmit={this.orderHandler} >
+                <h3>Enter your Contact Details</h3>
                 {formElementsArray.map(formElement => (
                     <Input
                         key={formElement.id}
@@ -199,7 +200,6 @@ class contactDetails extends Component {
             }
         return (
             <div className={classes.ContactDetails}>
-            <h3>Enter your Contact Details</h3>
                 {form}
             </div>
 
