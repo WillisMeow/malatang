@@ -8,25 +8,6 @@ import * as actionCreators from '../../store/actions/index';
 
 class MalaBuilder extends Component {
     state = {
-        /* ingredients: {
-            beef: 0,
-            pork: 0,
-            lamb: 0,
-            seafood: 0,
-            salad: 0,
-            noodle: 0,
-            tofu: 0,
-        }, */
-        totalPrice: 10,
-        price: {
-            beef: 2,
-            pork: 2,
-            lamb: 2.5,
-            seafood: 3,
-            salad: 3,
-            noodle: 2,
-            tofu: 1.5, 
-        },
         removable: false,
         purchasable: false,
         purchasing: false,
@@ -92,6 +73,7 @@ class MalaBuilder extends Component {
     }
 
     processOrderHandler = () => {
+        this.props.onInitPurchase()
         const queryParams = []; // Creating the Query params, to enable data to be passed to ContactDetails page
         for (let i in this.state.ingredients) {
             queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]));
@@ -115,8 +97,13 @@ class MalaBuilder extends Component {
         };
 
         let summary = null;
-        if (this.state.ingredients) {
-            summary = <OrderSummary ingredients={this.state.ingredients} price={this.state.totalPrice} processOrder={this.processOrderHandler} cancelOrder={this.cancelOrderHandler}/>
+        if (this.props.ingredients) {
+            summary = <OrderSummary 
+                        ingredients={this.props.ingredients} 
+                        price={this.props.totalPrice} 
+                        processOrder={this.processOrderHandler} 
+                        cancelOrder={this.cancelOrderHandler}
+                        />
         }
         if (this.state.sendingData) {
             summary = <Spinner />
@@ -150,9 +137,9 @@ class MalaBuilder extends Component {
 
 const mapStateToProps = state => {
     return {
-        ingredients: state.ingredients,
-        error: state.error,
-        totalPrice: state.totalPrice,
+        ingredients: state.malaBuilder.ingredients,
+        error: state.malaBuilder.error,
+        totalPrice: state.malaBuilder.totalPrice,
     };
 }
 
@@ -160,7 +147,8 @@ const mapDispatchToProps = dispatch => {
     return {
         onInitIngredients: () => dispatch(actionCreators.initIngredients()),
         onAddIngredient: (type) => dispatch(actionCreators.addIngredient(type)),
-        onRemoveIngredient: (type) => dispatch(actionCreators.removeIngredient(type))
+        onRemoveIngredient: (type) => dispatch(actionCreators.removeIngredient(type)),
+        onInitPurchase: () => dispatch(actionCreators.initPurchase())
     }
 }
 

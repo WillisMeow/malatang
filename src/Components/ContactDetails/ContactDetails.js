@@ -4,6 +4,9 @@ import Button from '../../UI/Button/Button';
 import classes from './ContactDetails.css';
 import axios from 'axios';
 import Input from '../Input/Input';
+import * as actionCreators from '../../store/actions/index';
+import { connect } from 'react-redux';
+import {Route, Redirect} from 'react-router-dom';
 
 class contactDetails extends Component {
     state = {
@@ -83,7 +86,7 @@ class contactDetails extends Component {
                         { value: 'cheapest', displayValue: 'Cheapest'}
                     ]
                 },
-                value: '',
+                value: 'fastest',
                 validation: {},
                 valid: false,
             }
@@ -120,15 +123,16 @@ class contactDetails extends Component {
         }
 
         const order = { // Data that is sent to the server
-            price: this.state.totalPrice,
-            ingredients: this.state.ingredients,
+            price: this.props.totalPrice,
+            ingredients: this.props.ingredients,
             orderData: formData // Key Value pair object we created above
         }
-        axios.post('https://react-malatang.firebaseio.com/orders.json', order)
+        this.props.onPurchaseMala(order);
+        /* axios.post('https://react-malatang.firebaseio.com/orders.json', order)
         .then(response => {
             this.setState({ loading : false })
             this.props.history.replace('/')
-        })
+        }) */
     }
 
     checkValidity(value, rules) {
@@ -191,20 +195,40 @@ class contactDetails extends Component {
                 <Button btnClass="Positive" disabled={!this.state.formIsValid} >ORDER</Button>
             </form>
         );
-            if (this.state.loading) {
+            if (this.props.loading) {
                 form = 
                 <>
                     <h2 className={classes.ContactDetails}>Processing</h2>   
                     <Spinner/>
                 </>
+            };
+
+            if (this.props.purchased) { // this.props.purchased used to return back to the main page.
+                form = <Redirect to="/" />
             }
+
         return (
             <div className={classes.ContactDetails}>
                 {form}
+                {/* {summary} */}
             </div>
 
         )
     }
 }
 
-export default contactDetails;
+const mapStateToProps = state => {
+    return {
+        loading: state.order.loading,
+        totalPrice: state.malaBuilder.totalPrice,
+        ingredients: state.malaBuilder.ingredients,
+        purchased: state.order.purchased
+    }
+}
+const mapDispatchToProps = dispatch => {
+    return {
+        onPurchaseMala: (data) => dispatch(actionCreators.purchaseMala(data))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(contactDetails);

@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import Button from '../../UI/Button/Button';
+import {Route, Redirect} from 'react-router-dom';
+import { connect } from 'react-redux';
+import * as actionCreators from '../../store/actions/index';
 
 class orderSummary extends Component {
     render () {
@@ -7,10 +10,10 @@ class orderSummary extends Component {
         .map(igKey => {
             return (this.props.ingredients[igKey] ? <li style={{textTransform: 'capitalize'}} key={igKey}>{igKey}: {this.props.ingredients[igKey]}</li> : null)
         })
-
+        
         return (
             <div>
-            <h2>Your Order</h2>
+                <h2>Your Order</h2>
                 <p>Malatang with the following ingredients:</p>
                 <ul>
                     {List}
@@ -22,8 +25,13 @@ class orderSummary extends Component {
             </div>
         )
     }
-
-    
 }
 
-export default orderSummary;
+const mapStateToProps = state => {
+    return {
+        ings: state.malaBuilder.ingredients,
+        purchased: state.order.purchased
+    }
+}
+
+export default connect(mapStateToProps)(orderSummary);
