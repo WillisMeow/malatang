@@ -10,8 +10,7 @@ class MalaBuilder extends Component {
     state = {
         removable: false,
         purchasable: false,
-        purchasing: false,
-        sendingData: false,
+        purchasing: false
     }
 
     // Use this handler to update the state, and in the Component Atrributes, pass through the state, not this method
@@ -96,9 +95,6 @@ class MalaBuilder extends Component {
                         cancelOrder={this.cancelOrderHandler}
                         />
         }
-        if (this.state.sendingData) {
-            summary = <Spinner />
-        }
 
         let mala = (this.props.error ? <p>Ingredients can't be loaded!</p> : <Spinner />)
         if (this.props.ingredients) { // making sure the <Mala> componenet is not loaded before the ingredients global redux state is set.
@@ -117,7 +113,6 @@ class MalaBuilder extends Component {
         return (
             <>
             <Modal cancelClicked={this.cancelOrderHandler} show={this.state.purchasing}>
-                {/* <Button text={'Hello'} clicked={this.cancelOrderHandler}/> */} {/* TODO: Create a orderProcessHandler that resets ingredient states to 0 and sends http request, sending data to firebase */}
                 {summary}
             </Modal>
             {mala}

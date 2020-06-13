@@ -92,11 +92,7 @@ class contactDetails extends Component {
             }
 
         },
-        loading: false,
-        formIsValid: false,
-        ingredients: null,
-        totalPrice: 0,
-
+        formIsValid: false
     }
 
     orderHandler = (event) => {
