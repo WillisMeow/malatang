@@ -88,7 +88,7 @@ class contactDetails extends Component {
                 },
                 value: 'fastest',
                 validation: {},
-                valid: false,
+                valid: true,
             }
 
         },
@@ -99,45 +99,22 @@ class contactDetails extends Component {
 
     }
 
-    componentWillMount () {
-        // Below is used to set the States to the correct ingredients and totalPrice, using the Query Params that were passed from MalaBuilder, ProcessOrderHandler method
-        const query = new URLSearchParams(this.props.location.search); // extracting the 'search' prop, and creating an object (new creates a new object)
-        const ingredients = {};
-        let price = 0;
-        for (let param of query.entries()) { //.entries returns an iterator, from which you can loop through all key/value pairs contained within the object 
-            if (param[0] === 'price') {
-                price = param[1]
-            } else { // eg [salad, 1]
-                ingredients[param[0]] = +param[1]
-            }
-        }
-        this.setState({ ingredients:ingredients, totalPrice:price})
-    }
-
     orderHandler = (event) => {
-        event.preventDefault(); // Stop in automatically sending a request, which will reload the page
-        this.setState({ loading : true }); // Setting loading to true, so that the user can see the spinner
+        event.preventDefault(); // Stop automatically sending a request, which will reload the page
         const formData = {}; // Creating an object with the key value pair from the state object (i.e name: willis etc..)
         for (let formElementIdentifier in this.state.orderForm) {
             formData[formElementIdentifier] = this.state.orderForm[formElementIdentifier].value // Creating key value pairs in the formData object
         }
-
         const order = { // Data that is sent to the server
             price: this.props.totalPrice,
             ingredients: this.props.ingredients,
             orderData: formData // Key Value pair object we created above
         }
         this.props.onPurchaseMala(order);
-        /* axios.post('https://react-malatang.firebaseio.com/orders.json', order)
-        .then(response => {
-            this.setState({ loading : false })
-            this.props.history.replace('/')
-        }) */
     }
 
     checkValidity(value, rules) {
         let isValid = true; // Starting off with True allows multiple if checks to be done, and one false will trigger a false
-
         if (rules.required) { // if there is a "required" for this element
             isValid = value.trim() !== '' && isValid; //.trim removes any whitespace before and after the input
         }

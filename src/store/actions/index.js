@@ -6,5 +6,6 @@ export {
 
 export {
     purchaseMala,
-    initPurchase
+    initPurchase,
+    fetchOrders
 } from './orders';

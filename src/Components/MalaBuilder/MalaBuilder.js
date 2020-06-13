@@ -30,7 +30,8 @@ class MalaBuilder extends Component {
         return sum > 0;
     }
 
-    // Adding ingredients in State
+    // Below handler methods are not required, as these are now managed through redux
+/*     // Adding ingredients in State
     ingredientAddedHandler = (type) => {
         let oldIngredient = this.state.ingredients[type]
         let newIngredient = oldIngredient + 1;
@@ -62,8 +63,7 @@ class MalaBuilder extends Component {
         } else { //If Qty = 0, return null.
             return null;
         }
-        
-    }
+    } */
 
     purchasingStateHandler = () => {
         this.setState({purchasing : true})
@@ -74,17 +74,8 @@ class MalaBuilder extends Component {
 
     processOrderHandler = () => {
         this.props.onInitPurchase() // used to reset purchased state (global redux within orders.js) to false
-        const queryParams = []; // Creating the Query params, to enable data to be passed to ContactDetails page
-        for (let i in this.state.ingredients) {
-            queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]));
-        }
-        console.log(queryParams)
-        queryParams.push('price=' + this.state.totalPrice)
-        const queryString = queryParams.join('&');
-        console.log(queryString)
         this.props.history.push({
-            pathname: '/contactDetails',
-            search: '?' + queryString
+            pathname: '/contactDetails'
         })
     }
 
