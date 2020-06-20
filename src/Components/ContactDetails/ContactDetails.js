@@ -2,11 +2,10 @@ import React, { Component } from 'react';
 import Spinner from '../../UI/Spinner/Spinner';
 import Button from '../../UI/Button/Button';
 import classes from './ContactDetails.css';
-import axios from 'axios';
 import Input from '../Input/Input';
 import * as actionCreators from '../../store/actions/index';
 import { connect } from 'react-redux';
-import {Route, Redirect} from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 class contactDetails extends Component {
     state = {

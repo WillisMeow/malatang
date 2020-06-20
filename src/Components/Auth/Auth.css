@@ -1,0 +1,13 @@
+.auth {
+    margin: 15px auto;
+    width: 80%;
+    padding: 10px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+@media (min-width: 500px) {
+    .Input {
+        width: 400px;
+    }
+}

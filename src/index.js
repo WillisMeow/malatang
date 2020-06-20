@@ -5,13 +5,15 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import malaBuilderReducer from './store/reducers/malaBuilder';
 import orderReducer from './store/reducers/orders';
+import authReducer from './store/reducers/auth';
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk'; // to allow middleware
 
 const rootReducer = combineReducers({
   malaBuilder: malaBuilderReducer,
-  order: orderReducer
+  order: orderReducer,
+  auth: authReducer
 })
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

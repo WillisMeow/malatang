@@ -29,43 +29,13 @@ class MalaBuilder extends Component {
         return sum > 0;
     }
 
-    // Below handler methods are not required, as these are now managed through redux
-/*     // Adding ingredients in State
-    ingredientAddedHandler = (type) => {
-        let oldIngredient = this.state.ingredients[type]
-        let newIngredient = oldIngredient + 1;
-        let ingredientState = {...this.state.ingredients}
-        ingredientState[type] = newIngredient
-        this.setState({ingredients : ingredientState})
-        // Increasing totalPrice
-        let ingredientPrice = this.state.price[type]
-        let newTotal = this.state.totalPrice + ingredientPrice
-        this.setState({totalPrice : newTotal})
-
-        this.purchasableHandler(this.props.ingredients) // Passing through ingredientState to ensure working with most up to date state
-    };
-    // Removing ingredients in State
-    ingredientRemovedHandler = (type) => {
-        let oldIngredient = this.state.ingredients[type]
-        if (oldIngredient > 0) {
-            let newIngredient = oldIngredient - 1;
-        let ingredientState = {...this.state.ingredients}
-        console.log(oldIngredient)
-        console.log(newIngredient)
-        ingredientState[type] = newIngredient
-        this.setState({ingredients : ingredientState})
-        // Decreasing totalPrice
-        let ingredientPrice = this.state.price[type]
-        let newTotal = this.state.totalPrice - ingredientPrice
-        this.setState({totalPrice : newTotal})
-        this.purchasableHandler(ingredientState)
-        } else { //If Qty = 0, return null.
-            return null;
-        }
-    } */
-
     purchasingStateHandler = () => {
-        this.setState({purchasing : true})
+        if (this.props.authenticated) {
+            this.setState({purchasing : true})
+        } else {
+            this.props.history.push("/auth")
+            this.props.onSetAuthRedirectPath("/contactDetails")
+        }
     }
     cancelOrderHandler = () => {
         this.setState({purchasing : false})
@@ -126,6 +96,7 @@ const mapStateToProps = state => {
         ingredients: state.malaBuilder.ingredients,
         error: state.malaBuilder.error,
         totalPrice: state.malaBuilder.totalPrice,
+        authenticated: state.auth.token !== null
     };
 }
 
@@ -134,7 +105,8 @@ const mapDispatchToProps = dispatch => {
         onInitIngredients: () => dispatch(actionCreators.initIngredients()),
         onAddIngredient: (type) => dispatch(actionCreators.addIngredient(type)),
         onRemoveIngredient: (type) => dispatch(actionCreators.removeIngredient(type)),
-        onInitPurchase: () => dispatch(actionCreators.initPurchase())
+        onInitPurchase: () => dispatch(actionCreators.initPurchase()),
+        onSetAuthRedirectPath: (path) => dispatch(actionCreators.setAuthRedirectPath(path))
     }
 }
 
