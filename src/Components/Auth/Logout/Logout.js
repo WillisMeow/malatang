@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import * as actionCreators from '../../../store/actions/index';
 import { connect } from 'react-redux';
-import { redirect, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 class Logout extends Component {
     componentDidMount () {
@@ -9,7 +9,6 @@ class Logout extends Component {
     }
     
     render () {
-        
         return (
             <Redirect to="/" />
         )

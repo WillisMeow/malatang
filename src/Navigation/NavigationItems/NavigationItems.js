@@ -7,7 +7,8 @@ const navigationItems = (props) => {
         <ul className={classes.NavigationItems}>
         <NavigationItem Clicked={props.LinkClicked} exact link='/' >MENU</NavigationItem> {/* LinkClicked is linked to SideDawer closing */}
         <NavigationItem Clicked={props.LinkClicked} link='/orders' >ORDERS</NavigationItem>
-        <NavigationItem Clicked={props.LinkClicked} link='/auth' >AUTHENTICATION</NavigationItem>
+        {props.auth ? null :<NavigationItem Clicked={props.LinkClicked} link='/auth' >AUTHENTICATION</NavigationItem>}
+        {props.auth ? <NavigationItem Clicked={props.LinkClicked} link='/logout' >LOGOUT</NavigationItem> : null}
         </ul>
     )
 }

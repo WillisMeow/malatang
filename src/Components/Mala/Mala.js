@@ -40,7 +40,7 @@ const mala = (props) => {
             />
         )
         })}
-        <button onClick={props.clicked} className={classes.Button} disabled={!props.purchasable}>ORDER NOW</button>
+        <button onClick={props.clicked} className={classes.Button} disabled={!props.purchasable}>{props.isAuthenticated ? "ORDER NOW" : "SIGN IN TO ORDER"}</button>
         </div>
     )
 };

@@ -105,7 +105,7 @@ class contactDetails extends Component {
             ingredients: this.props.ingredients,
             orderData: formData // Key Value pair object we created above
         }
-        this.props.onPurchaseMala(order);
+        this.props.onPurchaseMala(order, this.props.token);
     }
 
     checkValidity(value, rules) {
@@ -148,36 +148,40 @@ class contactDetails extends Component {
             })
         }
 
-        let form = (
-            <form onSubmit={this.orderHandler} >
-                <h3>Enter your Contact Details</h3>
-                {formElementsArray.map(formElement => (
-                    <Input
-                        key={formElement.id}
-                        elementType={formElement.config.elementType}
-                        elementConfig={formElement.config.elementConfig}
-                        value={formElement.config.value}
-                        changed={(event) => this.inputChangedHandler(event, formElement.id)}
-                        invalid={!formElement.config.valid}
-                        shouldValidate={formElement.config.validation}
-                        touched={formElement.config.touched}
-                        valueType={formElement.config.elementConfig.placeholder}
-                    />
-                ))}
-                <Button btnClass="Positive" disabled={!this.state.formIsValid} >ORDER</Button>
-            </form>
-        );
-            if (this.props.loading) {
-                form = 
-                <>
-                    <h2 className={classes.ContactDetails}>Processing</h2>   
-                    <Spinner/>
-                </>
-            };
+        let form = <Redirect to="/" /> // used to redirect to main page if props.ingredients is not set (is set on Dispatch Action SET_INGREDIENTS)
+        if (this.props.ingredients) {
+            form = (
+                <form onSubmit={this.orderHandler} >
+                    <h3>Enter your Contact Details</h3>
+                    {formElementsArray.map(formElement => (
+                        <Input
+                            key={formElement.id}
+                            elementType={formElement.config.elementType}
+                            elementConfig={formElement.config.elementConfig}
+                            value={formElement.config.value}
+                            changed={(event) => this.inputChangedHandler(event, formElement.id)}
+                            invalid={!formElement.config.valid}
+                            shouldValidate={formElement.config.validation}
+                            touched={formElement.config.touched}
+                            valueType={formElement.config.elementConfig.placeholder}
+                        />
+                    ))}
+                    <Button btnClass="Positive" disabled={!this.state.formIsValid} >ORDER</Button>
+                </form>
+            );
+        };
 
-            if (this.props.purchased) { // this.props.purchased used to return back to the main page.
-                form = <Redirect to="/" />
-            }
+        if (this.props.loading) {
+            form = 
+            <>
+                <h2 className={classes.ContactDetails}>Processing</h2>   
+                <Spinner/>
+            </>
+        };
+
+        if (this.props.purchased) { // this.props.purchased used to return back to the main page.
+            form = <Redirect to="/" />
+        }
 
         return (
             <div className={classes.ContactDetails}>
@@ -194,12 +198,13 @@ const mapStateToProps = state => {
         loading: state.order.loading,
         totalPrice: state.malaBuilder.totalPrice,
         ingredients: state.malaBuilder.ingredients,
-        purchased: state.order.purchased
+        purchased: state.order.purchased,
+        token: state.auth.token
     }
 }
 const mapDispatchToProps = dispatch => {
     return {
-        onPurchaseMala: (data) => dispatch(actionCreators.purchaseMala(data))
+        onPurchaseMala: (data, token) => dispatch(actionCreators.purchaseMala(data, token))
     }
 }
 

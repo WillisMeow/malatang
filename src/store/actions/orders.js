@@ -24,10 +24,10 @@ export const purchaseMalaFailed = () => {
         type: actionTypes.PURCHASE_MALA_FAILED
     }
 }
-export const purchaseMala = (orderData) => {
+export const purchaseMala = (orderData, token) => {
     return dispatch => {
         dispatch(purchaseMalaStart());
-        axios.post('https://react-malatang.firebaseio.com/orders.json', orderData)
+        axios.post('https://react-malatang.firebaseio.com/orders.json?auth=' + token, orderData)
         .then(response => {
             dispatch(purchaseMalaSuccess(response.data.name, orderData))
             /* this.setState({ loading : false })

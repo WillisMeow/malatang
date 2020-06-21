@@ -77,6 +77,7 @@ class MalaBuilder extends Component {
                     disabled={disabledInfo}
                     purchasable={this.purchasableHandler(this.props.ingredients)}
                     clicked={this.purchasingStateHandler}
+                    isAuthenticated={this.props.authenticated}
                 />
                     )
         }

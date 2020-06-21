@@ -36,6 +36,13 @@ export const authFail = (error) => {
         error: error
     }
 }
+export const checkExpirationDate = (expirationTime) => { // Firebase has basic logout period of 3600 seconds. Counting 3600 seconds, then logging user out.
+    return dispatch => {
+        setTimeout(() => {
+            dispatch(logout());}, 
+            expirationTime * 1000)
+    };
+}
 export const auth = (email, password, isSignup) => {
     return dispatch => {
         dispatch(authStart())
@@ -57,9 +64,28 @@ export const auth = (email, password, isSignup) => {
             localStorage.setItem("userId", response.data.localId)
             localStorage.setItem("expirationDate", expirationDate)
             dispatch(authSuccess(response.data.idToken, response.data.localId))
+            dispatch(checkExpirationDate(response.data.expiresIn))
         })
         .catch(err => {
             dispatch(authFail(err))
         })
+    }
+}
+
+export const authCheckState = () => {
+    return dispatch => {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            dispatch(logout())
+        } else {
+            const expirationDate = new Date(localStorage.getItem("expirationDate"));
+            if (expirationDate > new Date()) {
+                const userId = localStorage.getItem("userId");
+                dispatch(authSuccess(token, userId));
+                dispatch(checkExpirationDate((expirationDate.getTime() - new Date().getTime()) / 1000))
+            } else {
+                dispatch(logout())
+            }
+        }
     }
 }
